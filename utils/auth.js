@@ -11,4 +11,4 @@ async function verifyPassword(password,hashPassword){
 }
 
 
-export default {hashPassword,verifyPassword}
+export {hashPassword,verifyPassword}
