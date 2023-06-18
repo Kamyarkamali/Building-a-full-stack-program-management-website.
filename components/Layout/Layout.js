@@ -22,7 +22,7 @@ function layout({children}) {
 
                     <li className='flex items-center'>
                         <AiOutlineCheckSquare/>
-                        <Link href={"/todo"}>Add Todo</Link>
+                        <Link href={"/addTodo"}>Add Todo</Link>
                     </li>
 
                     <li className='flex items-center'>

@@ -1,5 +1,6 @@
-//Component/tempelates
-import SinginPage from "@/components/templates/SinginPage"
+import React from 'react'
+
+import SinginPage from '@/components/templates/SingInPage'
 
 function Singin() {
   return (

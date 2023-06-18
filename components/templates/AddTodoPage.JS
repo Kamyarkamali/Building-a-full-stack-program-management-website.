@@ -1,50 +1,44 @@
 import React, { useState } from 'react'
-
-//Icon
-import {GrAddCircle} from "react-icons/gr"
-import { FiSettings } from 'react-icons/fi'
-import {AiOutlineFileSearch} from "react-icons/ai"
-import { AiFillEdit } from 'react-icons/ai'
-import { MdDoneAll } from "react-icons/md"
-
 import RadioButton from '../element/RadioButton'
 
+///React-toastify
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function AddTodoPage() {
-
-    const [todo,setTodo]=useState("")
+    const [title,setTitle]=useState("")
     const [status,setStatus]=useState("todo")
+
+    const sendHandeler=async()=>{
+        const res=await fetch("/api/todos",{
+            method:"POST",
+            body:JSON.stringify({status,title}),
+            headers:{"Content-Type":"application/json"}
+        })
+        const data=await res.json()
+        console.log(data)
+        if(data.status==="succsecs"){
+            setTitle('')
+            setStatus("todo")
+            toast.success("add")
+        }
+    }
 
   return (
     <div className='add-form'>
-        <div className='flex items-center'>
-        <h1> Add New Todo</h1>
-        <GrAddCircle/>
-        </div>
+        <h2>Add New Todo</h2>
         <div className='add-form__input'>
-        <div className='add-form__input--first'>
+        <div className='add-form--frist'>
             <label htmlFor='title'>Title</label>
-            <input id='title' type='text' value={todo} onChange={(e)=>setTodo(e.target.value)}/>
+            <input id='title' type='text' value={title} onChange={(e) => setTitle(e.target.value)} />
         </div>
-        <div className='add-form__input--second'>
-            <RadioButton value="value" status={status} setStatus={setStatus} title="Todo">
-                <AiFillEdit/> 
-            </RadioButton>
-
-            <RadioButton value="inProgress" status={status} setStatus={setStatus} title="In Progress">
-                <FiSettings/>
-            </RadioButton>
-            <RadioButton value="Review" status={status} setStatus={setStatus} title="review">
-                <AiOutlineFileSearch/>
-            </RadioButton>
-
-            <RadioButton value="Done" status={status} setStatus={setStatus} title="done">
-                <MdDoneAll/>
-            </RadioButton>
+        <RadioButton status={status} setStatus={setStatus} value="todo" title="Todo"/>
+        <RadioButton status={status} setStatus={setStatus} value="inProgress" title="In Progress"/>
+        <RadioButton status={status} setStatus={setStatus} value="review" title="Review"/>
+        <RadioButton status={status} setStatus={setStatus} value="done" title="Done"/>
+        <button onClick={sendHandeler}>Send</button>
         </div>
-        <button>Add</button>
-        </div>
-
+        <ToastContainer/>
     </div>
   )
 }

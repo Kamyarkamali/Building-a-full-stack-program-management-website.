@@ -1,16 +1,10 @@
 import React from 'react'
 
-function RadioButton({value,title,status,setStatus,children}) {
+function RadioButton({status,setStatus,value,title,children}) {
   return (
-    <div>
-        <div className='todo flex items-center'>
-            {children}
-            {title}
-            <label htmlFor={value}> 
-                {value}
-            </label>
-            <input type='radio' id={value} value={value} checked={status===value} onChange={(e)=>setStatus(e.target.value)}/>
-            </div>
+    <div className="flex items-center gap-2">
+        <label htmlFor={value}>{title}</label>
+        <input type='radio' id={value} value={value} checked={status===value} onChange={(e)=>setStatus(e.target.value)}/>
     </div>
   )
 }

@@ -1,40 +1,45 @@
-import User from "@/models/User";
-
-import connectionToDB from "@/utils/connectionDB";
-
-import { getSession } from "next-auth/react";
+import User from "@/models/User"
+import connectDB from "@/utils/connectionDB"
+import { sortTodos } from "@/utils/sortTodos"
+import { getSession } from "next-auth/react"
 
 export default async function handler(req,res){
     try{
-        await connectionToDB()
-        res.status(201).json({status:"succses",message:"conection to DB"})
-    } catch(err){
-        console.log(err)
-        res.status(500).json({status:"failed",message:"problem to connection"})
+        connectDB()
+    }catch(err){
+        console.log("problem to connection") 
+        return res.status(500).json({status:"failed",message:"not conecction"})
     }
 
-    const session=await getSession({req})
+    const sessions=await getSession({req})
 
-    if(!session){
-        return res.status(401).json({status:"failed",message:"you are not logged account"})
+    if(!sessions){
+        return res.status(401).json({status:"failed",message:"not valid"})
     }
 
-    const user=await User.findOne({email:session.user.email})
+    const user=await User.findOne({email:sessions.user.email})
 
     if(!user){
-        return res.status(401).json({status:"failed",message:"user is not exsits"})
+        return res.status(401).json({status:"failed"})
     }
 
     if(req.method==="POST"){
-        const {title,status}=req.body;
+        const {title,status}=req.body
 
-        if(!title || !status){
-            return res.status(401).json({status:"failed",message:"invalid data"})
-        }
+        if (!title || !status) {
+      return res
+        .status(422)
+        .json({ status: "failed", message: "Invaild data!" });
+    }
 
         user.todos.push({title,status})
         user.save()
-
-        res.status(201).json({status:"succses",message:"created todos"})
+        console.log(title,status);
+    }else if(req.method==="GET"){
+        const Sordata=sortTodos(user.todos)
+        res.status(201).json({status:"succses",data:{todos:Sordata}})
     }
+    
+    
+    res.status(201).json({status:"succsecs",message:"todo created"})
 }
