@@ -1,7 +1,7 @@
-import Singin from '@/pages/Singin'
+import {signIn,useSession} from "next-auth/react"
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 function SinginPage() {
 
@@ -10,16 +10,22 @@ function SinginPage() {
 
   const router=useRouter()
 
+  const {status}=useSession()
+
   ///Function connect to api
 
   const singinHandeler=async()=>{
-    const res=await Singin("credentials",{
+    const res=await signIn("credentials",{
         email,
         password,
         redirect:false
     })
     if(!res.error) router.push("/")
   }
+
+  useEffect(()=>{
+    if(status==="authenticated") router.replace("/")
+  },[status])
 
   return (
     <div className='signin-form'>
