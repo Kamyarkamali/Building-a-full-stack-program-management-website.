@@ -2,8 +2,10 @@ import User from "@/models/User"
 import connectDB from "@/utils/connectionDB"
 import { sortTodos } from "@/utils/sortTodos"
 import { getSession } from "next-auth/react"
+import { useState } from "react"
 
 export default async function handler(req,res){
+   
     try{
         connectDB()
     }catch(err){
@@ -37,7 +39,7 @@ export default async function handler(req,res){
         console.log(title,status);
     }else if(req.method==="GET"){
         const Sordata=sortTodos(user.todos)
-        res.status(201).json({status:"succses",data:{todos:Sordata}})
+        res.status(201).json({status:"succsecs",data:{todos:Sordata}})
     }
     
     
