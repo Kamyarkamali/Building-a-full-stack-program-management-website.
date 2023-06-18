@@ -19,7 +19,7 @@ function SingoupPage() {
     })
     const data=await res.json()
     console.log(data)
-    if(data.status==="succses") router.push("/singin")
+    if(data.status==="succses") router.push("/SingIn")
   }
 
   return (
@@ -32,7 +32,7 @@ function SingoupPage() {
 
       <div>
         <p>Have an account?</p>
-        <Link href={"/singin"}>Sing in</Link>
+        <Link href={"/SingIn"}>Sing in</Link>
       </div>
     </div>
   )

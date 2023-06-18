@@ -1,3 +1,4 @@
+import Singin from '@/pages/Singin'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
@@ -12,14 +13,12 @@ function SinginPage() {
   ///Function connect to api
 
   const singinHandeler=async()=>{
-    const res=await fetch("/api/auth/singup",{
-      method:"POST",
-      body:JSON.stringify({email,password}),
-      headers:{"Content-Type":"application/json"}
+    const res=await Singin("credentials",{
+        email,
+        password,
+        redirect:false
     })
-    const data=await res.json()
-    console.log(data)
-    if(data.status==="succses") router.push("/singin")
+    if(!res.error) router.push("/")
   }
 
   return (
