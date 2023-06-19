@@ -2,7 +2,6 @@ import User from "@/models/User"
 import connectDB from "@/utils/connectionDB"
 import { sortTodos } from "@/utils/sortTodos"
 import { getSession } from "next-auth/react"
-import { useState } from "react"
 
 export default async function handler(req,res){
    
@@ -40,6 +39,16 @@ export default async function handler(req,res){
     }else if(req.method==="GET"){
         const Sordata=sortTodos(user.todos)
         res.status(201).json({status:"succsecs",data:{todos:Sordata}})
+    } else if(req.method==="PATCH"){
+        const {id,status}=req.body
+
+        if(!id || !status){
+            return res.status(401).json({status:"failed"})
+        }
+
+        const result=await User.updateOne({"todos._id":id},{$set:{"todos.$.status":status}})
+        console.log(result)
+        res.status(200).json({status:"succsecs"})
     }
     
     
