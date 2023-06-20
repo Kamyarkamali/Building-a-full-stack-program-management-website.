@@ -4,6 +4,7 @@ import React from 'react'
 //Icons
 import {VscListSelection} from "react-icons/vsc";
 import {AiOutlineCheckSquare , AiOutlineUser} from "react-icons/ai";
+import { useSession } from 'next-auth/react';
 
 function layout({children}) {
   return (
